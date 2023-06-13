@@ -42,15 +42,18 @@ class ProductManager {
     return this.products;
   }
   getProductById(id) {
-    const found = this.products.find((element) => element.id === id);
+    const indexProduct = this.products.findIndex(
+      (element) => element.id === id
+    );
     //Si lo encuentra...
-    if (found) {
+    if (indexProduct !== -1) {
       console.log(
-        `El producto (ID: ${id}) se encuentró correctamente en la lista de productos`
+        `El producto buscado (ID: ${id}):\n`,
+        this.products[indexProduct]
       );
     }
     //Si no lo encuentra...
-    if (!found) {
+    if (indexProduct === -1) {
       console.log(
         `El producto que busca (id: ${id}) no se encontró en la lista de productos`
       );
