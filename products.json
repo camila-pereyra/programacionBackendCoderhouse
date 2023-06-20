@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "Fideos tallarines",
+    "description": "1/2kg",
+    "price": 250,
+    "thumbnail": "fideo_codito.png",
+    "code": 18050,
+    "stock": 10
+  },
+  {
+    "id": 2,
+    "title": "Tomate",
+    "description": "Perita",
+    "price": 130,
+    "thumbnail": "tomate_perita.png",
+    "code": 11150,
+    "stock": 5
+  }
+]
