@@ -1,8 +1,8 @@
 [
   {
     "id": 1,
-    "title": "Fideos tallarines",
-    "description": "1/2kg",
+    "title": "Fideos",
+    "description": "Codito",
     "price": 250,
     "thumbnail": "fideo_codito.png",
     "code": 18050,
@@ -10,11 +10,20 @@
   },
   {
     "id": 2,
-    "title": "Tomate",
-    "description": "Perita",
-    "price": 130,
-    "thumbnail": "tomate_perita.png",
-    "code": 11150,
+    "title": "Arroz",
+    "description": "1/2kg",
+    "price": 150,
+    "thumbnail": "arroz.png",
+    "code": 18030,
+    "stock": 20
+  },
+  {
+    "id": 3,
+    "title": "Ravioles",
+    "description": "Verdura",
+    "price": 450,
+    "thumbnail": "ravioles.png",
+    "code": 18010,
     "stock": 5
   }
 ]
