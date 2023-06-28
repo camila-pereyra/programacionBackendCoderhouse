@@ -41,7 +41,6 @@ class ProductManager {
         return error;
       });
   }
-
   getProducts() {
     return new Promise((resolve, reject) => {
       fs.readFile(this.path, "utf8", (err, data) => {
@@ -58,15 +57,12 @@ class ProductManager {
       });
     });
   }
-
   getProductById(id) {
     return this.getProducts()
       .then((products) => {
         const indexProduct = products.findIndex((element) => element.id === id);
         if (indexProduct === -1) {
-          console.log(
-            `El producto que busca (id: ${id}) no se encontró en la lista de productos`
-          );
+          return { error: "Producto no encontrado" };
         } else {
           return products[indexProduct];
         }
@@ -137,59 +133,4 @@ class ProductManager {
   }
 }
 
-//INSTANCIA DE PRODUCT MANAGER
-const productManager = new ProductManager("./products.json");
-
-//AGREGANDO PRODUCTOS
-productManager.addProduct({
-  title: "Fideos",
-  description: "Codito",
-  price: 250,
-  thumbnail: "fideo_codito.png",
-  code: 18050,
-  stock: 10,
-});
-productManager.addProduct({
-  title: "Arroz",
-  description: "1/2kg",
-  price: 150,
-  thumbnail: "arroz.png",
-  code: 18030,
-  stock: 20,
-});
-productManager.addProduct({
-  title: "Ravioles",
-  description: "2 planchas",
-  price: 500,
-  thumbnail: "ravioles.png",
-  code: 18010,
-  stock: 3,
-});
-
-//OBTENIENDO PRODUCTOS
-productManager
-  .getProducts()
-  .then((productos) => {
-    console.log({ productos: productos });
-  })
-  .catch((err) => {
-    console.error("Error al obtener los productos:", err);
-  });
-
-//BUSCANDO PRODUCTOS POR ID
-productManager.getProductById(3).then((productFound) => {
-  productFound && console.log("Producto buscado: ", productFound);
-});
-
-//ACTUALIZANDO PRODUCTOS
-productManager.updateProduct(3, {
-  title: "Ravioles",
-  description: "Verdura",
-  price: 450,
-  thumbnail: "ravioles.png",
-  code: 18010,
-  stock: 5,
-});
-
-//ELIMIMANDO PRODUCTO
-productManager.deleteProduct(5);
+module.exports = ProductManager;
