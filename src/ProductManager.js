@@ -2,44 +2,40 @@ const fs = require("fs");
 
 class ProductManager {
   constructor(path) {
-    this.products = [];
     this.path = path;
   }
   addProduct(product) {
-    if (
-      !product.title ||
-      !product.description ||
-      !product.price ||
-      !product.thumbnail ||
-      !product.code ||
-      !product.stock
-    ) {
-      console.log(
-        "El producto que quiere agregar debe tener todos los campos completos"
-      );
-      return;
-    }
-    //VALIDACION: EL PRODUCT ESTA (O NO) EN LA LISTA DE PRODUCTOS
-    const found = this.products.find(
-      (element) => element.code === product.code
-    );
-    if (found) {
-      console.log(
-        `El producto que quiere agregar (code: ${product.code}) ya se encuentra en la lista de productos`
-      );
-      return;
-    }
-    const productAdd = {
-      id: this.products.length + 1,
-      ...product,
-    };
-    this.products.push(productAdd);
-    this.grabarEnArchivo(this.products)
-      .then(() => console.log("Archivo grabado con éxito"))
-      .catch((error) => {
-        console.log("No se pudo grabar el archivo");
-        return error;
-      });
+    return this.getProducts()
+      .then((products) => {
+        if (
+          !product.title ||
+          !product.description ||
+          !product.price ||
+          !product.thumbnail ||
+          !product.code ||
+          !product.stock
+        ) {
+          return;
+        }
+        const found = products.find((element) => element.code === product.code);
+        if (found) {
+          return;
+        } else {
+          const productAdd = {
+            id: products.length + 1,
+            ...product,
+          };
+          products.push(productAdd);
+          this.grabarEnArchivo(products)
+            .then(() => console.log("Archivo grabado con éxito"))
+            .catch((error) => {
+              console.log("No se pudo grabar el archivo");
+              return error;
+            });
+          return productAdd;
+        }
+      })
+      .catch((error) => error);
   }
   getProducts() {
     return new Promise((resolve, reject) => {
@@ -49,11 +45,9 @@ class ProductManager {
           return reject(err);
         }
         if (data === "") {
-          this.products = [];
-          return resolve(this.products);
+          return resolve([]);
         }
-        this.products = JSON.parse(data);
-        return resolve(this.products);
+        return resolve(JSON.parse(data));
       });
     });
   }
@@ -62,7 +56,7 @@ class ProductManager {
       .then((products) => {
         const indexProduct = products.findIndex((element) => element.id === id);
         if (indexProduct === -1) {
-          return { error: "Producto no encontrado" };
+          return undefined;
         } else {
           return products[indexProduct];
         }
@@ -72,57 +66,59 @@ class ProductManager {
       });
   }
   updateProduct(id, product) {
-    this.getProducts()
+    return this.getProducts()
       .then((products) => {
-        const indexProduct = products.findIndex((element) => element.id === id);
-
-        if (indexProduct === -1) {
-          console.log(
-            `El producto que quiere actualizar (id: ${id}) no se encontró en la lista de productos`
-          );
+        const index = products.findIndex((element) => {
+          return element.id === id;
+        });
+        if (index === -1) {
           return;
-        }
-        const productUpdate = {
-          id: id,
-          ...product,
-        };
-        products[indexProduct] = productUpdate;
-        this.products = products;
-        this.grabarEnArchivo(this.products)
-          .then(() => console.log(`El producto ID.${id} actualizado con éxito`))
-          .catch((error) => {
-            console.log("No se pudo actualizar el archivo");
-            return error;
-          });
-      })
-      .catch((error) => {
-        return error;
-      });
-  }
-  deleteProduct(id) {
-    this.getProducts()
-      .then((products) => {
-        const indexProduct = products.findIndex((element) => element.id === id);
-        if (indexProduct === -1) {
-          console.log(
-            `El producto que quiere eliminar (id: ${id}) no se encontró en la lista de productos`
-          );
         } else {
-          products.splice(indexProduct, 1);
-          this.products = products;
+          const productUpdate = {
+            id: id,
+            title: product.title || products[index].title,
+            description: product.description || products[index].description,
+            price: product.price || products[index].price,
+            thumbnail: product.thumbnail || products[index].thumbnail,
+            code: product.code || products[index].code,
+            stock: product.stock || products[index].stock,
+          };
+          products[index] = productUpdate;
           this.grabarEnArchivo(products)
             .then(() =>
-              console.log(`El producto ID.${id} fue eliminado exitosamente`)
+              console.log(`El producto ID.${id} actualizado con éxito`)
             )
             .catch((error) => {
-              console.log("No se pudo eliminar el producto");
+              console.log("No se pudo actualizar el archivo");
               return error;
             });
+          return productUpdate;
         }
       })
-      .catch((error) => {
-        return error;
-      });
+      .catch((error) => error);
+  }
+  deleteProduct(id) {
+    return this.getProducts()
+      .then((products) => {
+        const index = products.findIndex((element) => {
+          return element.id === id;
+        });
+        if (index === -1) {
+          return;
+        } else {
+          products.splice(index, 1);
+          this.grabarEnArchivo(products)
+            .then(() =>
+              console.log(`El producto ID.${id} actualizado con éxito`)
+            )
+            .catch((error) => {
+              console.log("No se pudo actualizar el archivo");
+              return error;
+            });
+          return { deleted: true };
+        }
+      })
+      .catch((error) => error);
   }
   grabarEnArchivo(products) {
     return fs.promises.writeFile(
