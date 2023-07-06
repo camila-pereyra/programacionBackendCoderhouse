@@ -1,47 +1,68 @@
 [
   {
     "id": 1,
-    "title": "Queso",
-    "description": "Sardo",
-    "price": 899,
-    "thumbnail": "queso_sardo.png",
-    "code": 11550,
-    "stock": 50
+    "title": "Manzana",
+    "description": "Roja",
+    "price": 289,
+    "thumbnail": "manzana.png",
+    "code": 1000,
+    "stock": 20,
+    "category": "Frutas y verduras",
+    "status": true
   },
   {
     "id": 2,
-    "title": "Cebolla",
-    "description": "Por kilo",
-    "price": 299,
-    "thumbnail": "cebolla.png",
-    "code": 9500,
-    "stock": 10
+    "title": "Naranja",
+    "description": "Ombligo",
+    "price": 259,
+    "thumbnail": "naranja.png",
+    "code": 1001,
+    "stock": 60,
+    "category": "Frutas y verduras",
+    "status": true
   },
   {
     "id": 3,
-    "title": "Galletitas",
-    "description": "Dulces",
+    "title": "Mandarina",
+    "description": "Dulce",
     "price": 159,
-    "thumbnail": "galletitas.png",
-    "code": 5500,
-    "stock": 15
+    "thumbnail": "mandarina.png",
+    "code": 1002,
+    "stock": 30,
+    "category": "Frutas y verduras",
+    "status": true
   },
   {
     "id": 4,
-    "title": "Azucar",
-    "description": "Blanca",
-    "price": 399,
-    "thumbnail": "azucar.png",
-    "code": 96000,
-    "stock": 20
+    "title": "Carne",
+    "description": "Bondiola",
+    "price": 999,
+    "thumbnail": "bondiola.png",
+    "code": 2000,
+    "stock": 100,
+    "category": "Carnes",
+    "status": true
   },
   {
     "id": 5,
-    "title": "Milanesa",
-    "description": "Carne",
-    "price": 189,
-    "thumbnail": "milanesas.png",
-    "code": 8200,
-    "stock": 10
+    "title": "Gaseosa",
+    "description": "Lima limon",
+    "price": 299,
+    "thumbnail": "limalimon.png",
+    "code": 3000,
+    "stock": 50,
+    "category": "Almacen",
+    "status": true
+  },
+  {
+    "id": 6,
+    "title": "Queso",
+    "description": "Fresco",
+    "price": 500,
+    "thumbnail": "queso_fresco.png",
+    "code": 4000,
+    "stock": 20,
+    "category": "Fiambreria",
+    "status": true
   }
 ]

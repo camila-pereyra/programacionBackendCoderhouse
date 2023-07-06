@@ -11,9 +11,9 @@ class ProductManager {
           !product.title ||
           !product.description ||
           !product.price ||
-          !product.thumbnail ||
           !product.code ||
-          !product.stock
+          !product.stock ||
+          !product.category
         ) {
           return;
         }
@@ -22,16 +22,19 @@ class ProductManager {
           return;
         } else {
           const productAdd = {
-            id: products.length + 1,
-            ...product,
+            id:
+              products.length === 0 ? 1 : products[products.length - 1].id + 1,
+            title: product.title,
+            description: product.description,
+            price: product.price,
+            thumbnail: product.thumbnail || "",
+            code: product.code,
+            stock: product.stock,
+            category: product.category,
+            status: true,
           };
           products.push(productAdd);
-          this.grabarEnArchivo(products)
-            .then(() => console.log("Archivo grabado con éxito"))
-            .catch((error) => {
-              console.log("No se pudo grabar el archivo");
-              return error;
-            });
+          this.grabarEnArchivo(products);
           return productAdd;
         }
       })
@@ -82,16 +85,11 @@ class ProductManager {
             thumbnail: product.thumbnail || products[index].thumbnail,
             code: product.code || products[index].code,
             stock: product.stock || products[index].stock,
+            category: product.category || products[index].category,
+            status: product.status || products[index].status,
           };
           products[index] = productUpdate;
-          this.grabarEnArchivo(products)
-            .then(() =>
-              console.log(`El producto ID.${id} actualizado con éxito`)
-            )
-            .catch((error) => {
-              console.log("No se pudo actualizar el archivo");
-              return error;
-            });
+          this.grabarEnArchivo(products);
           return productUpdate;
         }
       })
@@ -107,25 +105,19 @@ class ProductManager {
           return;
         } else {
           products.splice(index, 1);
-          this.grabarEnArchivo(products)
-            .then(() =>
-              console.log(`El producto ID.${id} actualizado con éxito`)
-            )
-            .catch((error) => {
-              console.log("No se pudo actualizar el archivo");
-              return error;
-            });
+          this.grabarEnArchivo(products);
           return { deleted: true };
         }
       })
       .catch((error) => error);
   }
   grabarEnArchivo(products) {
-    return fs.promises.writeFile(
-      this.path,
-      JSON.stringify(products, null, 2),
-      "utf-8"
-    );
+    fs.promises
+      .writeFile(this.path, JSON.stringify(products, null, 2), "utf-8")
+      .then(() => "Archivo grabado con éxito")
+      .catch((error) => {
+        console.log("Error al grabar el archivo: ", error);
+      });
   }
 }
 
